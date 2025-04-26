@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -18,7 +17,7 @@ const CommunityPage = () => {
         avatar: 'https://i.pravatar.cc/150?img=1'
       },
       show: animeShows[0],
-      comment: 'This is one of the best anime series I've ever watched. The story gets incredibly deep and the action scenes are breathtaking.',
+      comment: "This is one of the best anime series I've ever watched. The story gets incredibly deep and the action scenes are breathtaking.",
       rating: 9.5,
       timestamp: '3 hours ago',
       likes: 24
@@ -53,7 +52,7 @@ const CommunityPage = () => {
         name: 'K-Drama_Enthusiast',
       },
       show: kdramaShows[3],
-      comment: 'This show keeps you on the edge of your seat from beginning to end. It's thrilling, emotional, and has great performances.',
+      comment: "This show keeps you on the edge of your seat from beginning to end. It's thrilling, emotional, and has great performances.",
       rating: 8.7,
       timestamp: '3 days ago',
       likes: 29
@@ -92,7 +91,7 @@ const CommunityPage = () => {
       },
       replies: 18,
       lastActivity: '2 days ago',
-      preview: 'I feel like there are some real gems this year that aren\'t getting enough attention. What overlooked shows would you recommend?'
+      preview: "I feel like there are some real gems this year that aren't getting enough attention. What overlooked shows would you recommend?"
     }
   ];
   

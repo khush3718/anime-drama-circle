@@ -133,7 +133,7 @@ const CommunitySection = () => {
         type: 'anime',
         image: 'https://m.media-amazon.com/images/M/MV5BZjZjNzI5MDctY2Y4YS00NmM4LTljMmItZTFkOTExNGI3ODRhXkEyXkFqcGdeQXVyNjc3MjQzNTI@._V1_.jpg'
       },
-      comment: 'The animation quality is breathtaking! Some of the best action scenes I've ever watched.',
+      comment: "The animation quality is breathtaking! Some of the best action scenes I've ever watched.",
       rating: 9.2,
       timestamp: '1 day ago'
     }
