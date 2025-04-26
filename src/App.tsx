@@ -21,11 +21,8 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/browse" element={<BrowsePage />} />
-          <Route path="/anime" element={<BrowsePage />} />
-          <Route path="/kdrama" element={<BrowsePage />} />
           <Route path="/community" element={<CommunityPage />} />
-          <Route path="/:type/:id" element={<ShowDetail />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="/:id" element={<ShowDetail />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

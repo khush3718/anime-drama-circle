@@ -11,7 +11,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 interface AddRecommendationFormValues {
   title: string;
   type: 'anime' | 'kdrama';
-  image: string;
   comment: string;
   rating: string;
 }
@@ -69,20 +68,6 @@ const AddRecommendationSheet: React.FC<AddRecommendationSheetProps> = ({ open, o
                       <SelectItem value="kdrama">K-Drama</SelectItem>
                     </SelectContent>
                   </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="image"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Image URL</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter image URL" {...field} />
-                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}

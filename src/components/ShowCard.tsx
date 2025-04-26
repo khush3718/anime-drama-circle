@@ -7,7 +7,6 @@ export interface ShowProps {
   id: string;
   title: string;
   type: 'anime' | 'kdrama';
-  image: string;
   rating: number;
   year?: number;
   genres?: string[];
@@ -17,44 +16,41 @@ const ShowCard: React.FC<ShowProps> = ({
   id, 
   title, 
   type, 
-  image, 
   rating, 
   year, 
   genres 
 }) => {
   return (
-    <Link to={`/${type}/${id}`} className="anime-card group">
-      <div className="relative h-full">
-        {/* Image */}
-        <img 
-          src={image} 
-          alt={title} 
-          className="anime-card-image"
-        />
+    <Link to={`/${id}`} className="block p-4 bg-card rounded-lg border border-anime-primary/10 hover:border-anime-primary/30 transition-colors">
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+            {type === 'anime' ? 'Anime' : 'K-Drama'}
+          </span>
+          <button className="p-1.5 bg-black/40 hover:bg-anime-secondary rounded-full transition-colors">
+            <Heart className="h-3.5 w-3.5 text-white" />
+          </button>
+        </div>
         
-        {/* Overlay */}
-        <div className="anime-card-overlay flex flex-col justify-end p-3">
-          <div className="space-y-1 text-white">
-            <h3 className="text-sm font-medium line-clamp-1">{title}</h3>
-            
-            <div className="flex items-center space-x-1">
-              <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-              <span className="text-xs">{rating.toFixed(1)}</span>
-            </div>
-            
-            {year && <p className="text-xs opacity-70">{year}</p>}
+        <h3 className="font-medium line-clamp-1">{title}</h3>
+        
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-1">
+            <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />
+            <span className="text-sm">{rating.toFixed(1)}</span>
           </div>
+          {year && <span className="text-xs text-muted-foreground">{year}</span>}
         </div>
         
-        {/* Type badge */}
-        <div className="absolute top-2 left-2 bg-black/60 backdrop-blur-sm px-2 py-0.5 rounded text-xs uppercase font-semibold">
-          {type === 'anime' ? 'Anime' : 'K-Drama'}
-        </div>
-        
-        {/* Like button */}
-        <button className="absolute top-2 right-2 p-1.5 bg-black/40 hover:bg-anime-secondary rounded-full transition-colors">
-          <Heart className="h-3.5 w-3.5 text-white" />
-        </button>
+        {genres && (
+          <div className="flex flex-wrap gap-1">
+            {genres.map(genre => (
+              <span key={genre} className="text-xs bg-anime-primary/10 px-2 py-0.5 rounded">
+                {genre}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
     </Link>
   );
