@@ -11,12 +11,11 @@ import Footer from '@/components/Footer';
 import { animeShows, kdramaShows } from '@/data/shows';
 
 const ShowDetail = () => {
-  const { type, id } = useParams<{ type: string; id: string }>();
+  const { id } = useParams<{ id: string }>();
   
-  // Find the show details based on type and id
-  const show = type === 'anime' 
-    ? animeShows.find(show => show.id === id)
-    : kdramaShows.find(show => show.id === id);
+  // Find the show details based on id from all shows
+  const allShows = [...animeShows, ...kdramaShows];
+  const show = allShows.find(show => show.id === id);
   
   if (!show) {
     return (
@@ -64,25 +63,21 @@ const ShowDetail = () => {
       <main className="flex-grow">
         {/* Hero section */}
         <div className="relative">
-          {/* Background with blur */}
-          <div 
-            className="absolute inset-0 bg-cover bg-center blur-md opacity-30"
-            style={{ backgroundImage: `url(${show.image})` }}
-          />
-          
-          {/* Overlay gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
+          {/* Background gradient instead of image */}
+          <div className="absolute inset-0 bg-gradient-to-b from-anime-primary/30 to-background"></div>
           
           {/* Content */}
           <div className="container mx-auto px-4 py-8 relative z-10">
             <div className="flex flex-col md:flex-row gap-8">
-              {/* Poster */}
+              {/* Show placeholder instead of poster */}
               <div className="flex-shrink-0">
-                <img 
-                  src={show.image} 
-                  alt={show.title} 
-                  className="w-full max-w-[300px] h-auto rounded-lg shadow-lg mx-auto md:mx-0"
-                />
+                <div 
+                  className="w-full max-w-[300px] h-[400px] rounded-lg shadow-lg mx-auto md:mx-0 bg-anime-primary/20 flex items-center justify-center"
+                >
+                  <span className="text-3xl font-bold text-anime-primary">
+                    {show.title.charAt(0)}
+                  </span>
+                </div>
               </div>
               
               {/* Details */}
@@ -259,25 +254,17 @@ const ShowDetail = () => {
                   .map(similarShow => (
                     <Link 
                       key={similarShow.id} 
-                      to={`/${similarShow.type}/${similarShow.id}`}
-                      className="anime-card group"
+                      to={`/${similarShow.id}`}
+                      className="p-4 bg-card rounded-lg border border-anime-primary/10 hover:border-anime-primary/30 transition-colors"
                     >
-                      <div className="relative h-full">
-                        <img 
-                          src={similarShow.image} 
-                          alt={similarShow.title} 
-                          className="anime-card-image"
-                        />
-                        
-                        <div className="anime-card-overlay flex flex-col justify-end p-3">
-                          <div className="space-y-1 text-white">
-                            <h3 className="text-sm font-medium line-clamp-1">{similarShow.title}</h3>
-                            
-                            <div className="flex items-center space-x-1">
-                              <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                              <span className="text-xs">{similarShow.rating.toFixed(1)}</span>
-                            </div>
-                          </div>
+                      <div className="space-y-2">
+                        <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                          {similarShow.type === 'anime' ? 'Anime' : 'K-Drama'}
+                        </span>
+                        <h3 className="font-medium line-clamp-1">{similarShow.title}</h3>
+                        <div className="flex items-center">
+                          <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400 mr-1" />
+                          <span className="text-sm">{similarShow.rating.toFixed(1)}</span>
                         </div>
                       </div>
                     </Link>
