@@ -1,9 +1,11 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Star, MessageCircle, Plus } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import AddRecommendationSheet from './AddRecommendationSheet';
+import AddNoteSheet from './AddNoteSheet';
 
 interface RecommendationProps {
   id: string;
@@ -30,6 +32,8 @@ const CommunityRecommendation: React.FC<RecommendationProps> = ({
   timestamp,
   notes
 }) => {
+  const [isAddNoteOpen, setIsAddNoteOpen] = useState(false);
+
   return (
     <Card className="bg-card border-anime-primary/10 hover:border-anime-primary/30 transition-colors">
       <CardContent className="p-4 space-y-4">
@@ -81,17 +85,21 @@ const CommunityRecommendation: React.FC<RecommendationProps> = ({
         {/* Actions */}
         <div className="flex items-center justify-between pt-2">
           <span className="text-xs text-muted-foreground">{timestamp}</span>
-          <Button variant="ghost" size="sm" className="gap-1">
+          <Button variant="ghost" size="sm" className="gap-1" onClick={() => setIsAddNoteOpen(true)}>
             <MessageCircle className="h-4 w-4" />
             Add Note
           </Button>
         </div>
+
+        <AddNoteSheet open={isAddNoteOpen} onOpenChange={setIsAddNoteOpen} />
       </CardContent>
     </Card>
   );
 };
 
 const CommunitySection = () => {
+  const [isAddRecommendationOpen, setIsAddRecommendationOpen] = useState(false);
+
   // Sample data
   const recommendations: RecommendationProps[] = [
     {
@@ -105,7 +113,7 @@ const CommunitySection = () => {
         type: "anime",
         image: "https://m.media-amazon.com/images/M/MV5BNzc5MTczNDQtNDFjNi00ZDU5LWFkNzItOTE1NzQzMzdhNzMxXkEyXkFqcGdeQXVyNTgyNTA4MjM@._V1_.jpg"
       },
-      comment: "Must-watch series with amazing plot twists!",
+      comment: "Must-watch series with amazing plot twists",
       rating: 9.5,
       timestamp: "2 hours ago",
       notes: [
@@ -123,7 +131,7 @@ const CommunitySection = () => {
         type: "kdrama",
         image: "https://m.media-amazon.com/images/M/MV5BYWE3MDVkN2EtNjQ5MS00ZDQ4LTliNzYtMjc2YWMzMDEwMTA3XkEyXkFqcGdeQXVyMTEzMTI1Mjk3._V1_.jpg"
       },
-      comment: "A thrilling series that will keep you on the edge of your seat!",
+      comment: "A thrilling series that will keep you on the edge of your seat",
       rating: 9.0,
       timestamp: "1 day ago"
     }
@@ -134,7 +142,7 @@ const CommunitySection = () => {
       <div className="container max-w-4xl mx-auto px-4">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-bold">Community Recommendations</h2>
-          <Button className="gap-2">
+          <Button className="gap-2" onClick={() => setIsAddRecommendationOpen(true)}>
             <Plus className="h-4 w-4" />
             Add Recommendation
           </Button>
@@ -145,6 +153,8 @@ const CommunitySection = () => {
             <CommunityRecommendation key={rec.id} {...rec} />
           ))}
         </div>
+
+        <AddRecommendationSheet open={isAddRecommendationOpen} onOpenChange={setIsAddRecommendationOpen} />
       </div>
     </section>
   );
