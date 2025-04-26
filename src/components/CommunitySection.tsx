@@ -1,8 +1,9 @@
 
 import React from 'react';
-import { Star, MessageCircle, User } from 'lucide-react';
+import { Star, MessageCircle, Plus } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 interface RecommendationProps {
   id: string;
@@ -11,7 +12,6 @@ interface RecommendationProps {
     avatar?: string;
   };
   show: {
-    id: string;
     title: string;
     type: 'anime' | 'kdrama';
     image: string;
@@ -19,6 +19,7 @@ interface RecommendationProps {
   comment: string;
   rating: number;
   timestamp: string;
+  notes?: { text: string; user: string }[];
 }
 
 const CommunityRecommendation: React.FC<RecommendationProps> = ({
@@ -26,61 +27,64 @@ const CommunityRecommendation: React.FC<RecommendationProps> = ({
   show,
   comment,
   rating,
-  timestamp
+  timestamp,
+  notes
 }) => {
   return (
-    <Card className="bg-card border-anime-primary/10 hover:border-anime-primary/30 transition-colors overflow-hidden">
-      <CardContent className="p-4">
+    <Card className="bg-card border-anime-primary/10 hover:border-anime-primary/30 transition-colors">
+      <CardContent className="p-4 space-y-4">
+        {/* User and Rating */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Avatar className="h-8 w-8">
+              <AvatarImage src={user.avatar} alt={user.name} />
+              <AvatarFallback className="bg-anime-primary/20">
+                {user.name.substring(0, 2).toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+            <span className="text-sm">{user.name}</span>
+          </div>
+          <div className="flex items-center gap-1 bg-anime-dark px-2 py-1 rounded-full">
+            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+            <span>{rating}/10</span>
+          </div>
+        </div>
+
+        {/* Show Info */}
         <div className="flex gap-4">
-          {/* Show image */}
-          <div className="flex-shrink-0 w-16 h-24 rounded overflow-hidden">
-            <img 
-              src={show.image} 
-              alt={show.title} 
-              className="w-full h-full object-cover"
-            />
+          <img 
+            src={show.image} 
+            alt={show.title} 
+            className="w-24 h-32 object-cover rounded"
+          />
+          <div>
+            <h3 className="font-medium mb-1">{show.title}</h3>
+            <span className="text-xs text-muted-foreground">{show.type}</span>
+            <p className="text-sm mt-2 text-muted-foreground">{comment}</p>
           </div>
-          
-          {/* Content */}
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center justify-between mb-1">
-              {/* User info */}
-              <div className="flex items-center gap-2">
-                <Avatar className="h-6 w-6">
-                  <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback className="bg-anime-primary/20 text-anime-primary text-xs">
-                    {user.name.substring(0, 2).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-                <span className="text-xs text-anime-light">{user.name}</span>
-              </div>
-              
-              {/* Rating */}
-              <div className="flex items-center gap-1 bg-anime-dark px-1.5 py-0.5 rounded-full">
-                <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                <span className="text-xs">{rating}</span>
-              </div>
-            </div>
-            
-            {/* Show title */}
-            <h4 className="font-medium text-sm mb-1 line-clamp-1">
-              {show.title}
-            </h4>
-            
-            {/* Comment */}
-            <p className="text-xs text-muted-foreground mb-2 line-clamp-2">
-              {comment}
-            </p>
-            
-            {/* Footer */}
-            <div className="flex items-center justify-between text-xs text-anime-light">
-              <span>{timestamp}</span>
-              <div className="flex items-center gap-1">
-                <MessageCircle className="h-3 w-3" />
-                <span>Reply</span>
-              </div>
+        </div>
+
+        {/* Notes/Comments Section */}
+        {notes && notes.length > 0 && (
+          <div className="border-t pt-3 mt-3">
+            <div className="text-sm font-medium mb-2">Notes:</div>
+            <div className="space-y-2">
+              {notes.map((note, i) => (
+                <div key={i} className="text-sm text-muted-foreground">
+                  <span className="font-medium text-foreground">{note.user}:</span> {note.text}
+                </div>
+              ))}
             </div>
           </div>
+        )}
+
+        {/* Actions */}
+        <div className="flex items-center justify-between pt-2">
+          <span className="text-xs text-muted-foreground">{timestamp}</span>
+          <Button variant="ghost" size="sm" className="gap-1">
+            <MessageCircle className="h-4 w-4" />
+            Add Note
+          </Button>
         </div>
       </CardContent>
     </Card>
@@ -88,66 +92,55 @@ const CommunityRecommendation: React.FC<RecommendationProps> = ({
 };
 
 const CommunitySection = () => {
-  // Dummy data
+  // Sample data
   const recommendations: RecommendationProps[] = [
     {
-      id: '1',
+      id: "1",
       user: {
-        name: 'MangaLover',
-        avatar: 'https://i.pravatar.cc/150?img=1'
+        name: "AnimeEnjoyer",
+        avatar: "https://i.pravatar.cc/150?img=1"
       },
       show: {
-        id: 'attack-on-titan',
-        title: 'Attack on Titan',
-        type: 'anime',
-        image: 'https://m.media-amazon.com/images/M/MV5BNzc5MTczNDQtNDFjNi00ZDU5LWFkNzItOTE1NzQzMzdhNzMxXkEyXkFqcGdeQXVyNTgyNTA4MjM@._V1_.jpg'
+        title: "Attack on Titan",
+        type: "anime",
+        image: "https://m.media-amazon.com/images/M/MV5BNzc5MTczNDQtNDFjNi00ZDU5LWFkNzItOTE1NzQzMzdhNzMxXkEyXkFqcGdeQXVyNTgyNTA4MjM@._V1_.jpg"
       },
-      comment: 'This is a masterpiece! The story gets so complex and the character development is amazing.',
+      comment: "Must-watch series with amazing plot twists!",
       rating: 9.5,
-      timestamp: '2 hours ago'
+      timestamp: "2 hours ago",
+      notes: [
+        { user: "KDramaFan", text: "Started watching because of this recommendation - loving it!" },
+        { user: "NewToAnime", text: "Is this good for beginners to anime?" }
+      ]
     },
     {
-      id: '2',
+      id: "2",
       user: {
-        name: 'KDramaQueen',
+        name: "DramaQueen"
       },
       show: {
-        id: 'squid-game',
-        title: 'Squid Game',
-        type: 'kdrama',
-        image: 'https://m.media-amazon.com/images/M/MV5BYWE3MDVkN2EtNjQ5MS00ZDQ4LTliNzYtMjc2YWMzMDEwMTA3XkEyXkFqcGdeQXVyMTEzMTI1Mjk3._V1_.jpg'
+        title: "Squid Game",
+        type: "kdrama",
+        image: "https://m.media-amazon.com/images/M/MV5BYWE3MDVkN2EtNjQ5MS00ZDQ4LTliNzYtMjc2YWMzMDEwMTA3XkEyXkFqcGdeQXVyMTEzMTI1Mjk3._V1_.jpg"
       },
-      comment: 'Such a thrilling show! Every episode kept me on the edge of my seat.',
+      comment: "A thrilling series that will keep you on the edge of your seat!",
       rating: 9.0,
-      timestamp: '5 hours ago'
-    },
-    {
-      id: '3',
-      user: {
-        name: 'AnimeFan2023',
-        avatar: 'https://i.pravatar.cc/150?img=3'
-      },
-      show: {
-        id: 'demon-slayer',
-        title: 'Demon Slayer',
-        type: 'anime',
-        image: 'https://m.media-amazon.com/images/M/MV5BZjZjNzI5MDctY2Y4YS00NmM4LTljMmItZTFkOTExNGI3ODRhXkEyXkFqcGdeQXVyNjc3MjQzNTI@._V1_.jpg'
-      },
-      comment: "The animation quality is breathtaking! Some of the best action scenes I've ever watched.",
-      rating: 9.2,
-      timestamp: '1 day ago'
+      timestamp: "1 day ago"
     }
   ];
 
   return (
-    <section className="py-10 bg-gradient-to-b from-anime-dark to-background">
-      <div className="container mx-auto px-4">
+    <section className="py-8">
+      <div className="container max-w-4xl mx-auto px-4">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold">Community Picks</h2>
-          <div className="text-sm text-anime-primary cursor-pointer hover:underline">View all</div>
+          <h2 className="text-2xl font-bold">Community Recommendations</h2>
+          <Button className="gap-2">
+            <Plus className="h-4 w-4" />
+            Add Recommendation
+          </Button>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="space-y-4">
           {recommendations.map(rec => (
             <CommunityRecommendation key={rec.id} {...rec} />
           ))}
