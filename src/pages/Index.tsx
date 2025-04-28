@@ -1,23 +1,21 @@
 
 import React from 'react';
 import Navbar from '@/components/Navbar';
+import Hero from '@/components/Hero';
+import TrendingShows from '@/components/TrendingShows';
 import CommunitySection from '@/components/CommunitySection';
 import Footer from '@/components/Footer';
+import { trendingShows, recentlyAddedShows } from '@/data/shows';
 
 const Index = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-grow">
-        <div className="bg-anime-dark py-10">
-          <div className="container mx-auto px-4 text-center">
-            <h1 className="text-3xl font-bold mb-3">Community Recommendations</h1>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Share and discover recommendations from the community. No account needed!
-            </p>
-          </div>
-        </div>
+        <Hero />
+        <TrendingShows title="Trending Shows" shows={trendingShows} />
         <CommunitySection />
+        <TrendingShows title="Recently Added" shows={recentlyAddedShows} />
       </main>
       <Footer />
     </div>
